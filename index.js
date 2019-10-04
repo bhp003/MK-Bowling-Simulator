@@ -1,7 +1,43 @@
-module.exports = class Game {
+$(document).ready(() => {
+  startGame();
+});
+
+function startGame() {
+  $('#play-button').click(() => {
+    const game = new Game();
+    game.play();
+    const score = game.getScores();
+    for (let frame = 0; frame < 10; frame++) {
+      displayFrame(game, frame);
+      displayScore(game, frame);
+    }
+  $('#score').val(score);
+  });
+}
+
+function displayFrame(game, frame) {
+  for (let i = 0; i < 2; i++) {
+    // score 1 and score 2 of each frame
+    $('#scoresheetTable tr:eq(1) td:eq(' + ((frame * 2) + i) + ')')
+    .html(game.frames[frame][i]);
+    
+    // last frame 3rd score
+    if (frame == game.frames.length - 1 && game.frames[frame].length == 3)
+      $('#scoresheetTable tr:eq(1) td:eq(' + ((frame * 2) + 2) + ')')
+      .html(game.frames[frame][2]);
+  } 
+}
+
+function displayScore(game, frame) {
+  $('#scoresheetTable tr:eq(2) td:eq(' + (frame) + ')')
+  .html(game.scores[frame]);
+}
+
+class Game {
   constructor() {
     this.frames = []
     this.rolls = []
+    this.scores = [];
     this.totalFrames = 10;
     this.bowlPerFrame = 2;
     this.maxScorePerBowl = 10;
@@ -60,7 +96,7 @@ module.exports = class Game {
   getScores() {
     let score = 0;
     let index = 0;
-
+    this.scores.length = 0;
     // Whenever we score a strike, we want to add 10 and the scores
     // of the next 2 rolls. Without the second 0 in rolls[] allows
     // us to achieve this easily without any strike/spare check for
@@ -85,6 +121,7 @@ module.exports = class Game {
         score += this.rolls[index] + this.rolls[index + 1];
         index += nextFrame;
       }
+      this.scores.push(score);
     }
     return score;
   }

@@ -1,11 +1,13 @@
-const Game = require('./Game');
+const Game = require('./Game.js');
 
 function setAllStrikes(gameTest) {
   gameTest.frames.length = 0;
   for (let frame = 1; frame <= 9; frame++) {
     gameTest.frames.push([gameTest.maxScorePerBowl, 0]);
   }
-  gameTest.frames.push([gameTest.maxScorePerBowl, gameTest.maxScorePerBowl, gameTest.maxScorePerBowl]);
+  gameTest.frames.push([gameTest.maxScorePerBowl, 
+    gameTest.maxScorePerBowl, 
+    gameTest.maxScorePerBowl]);
   gameTest.recordRolls();
 }
 
@@ -14,7 +16,9 @@ function setAllSpares(gameTest) {
   for (let frame = 1; frame <= 9; frame++) {
     gameTest.frames.push([0, gameTest.maxScorePerBowl]);
   }
-  gameTest.frames.push([0, gameTest.maxScorePerBowl, gameTest.maxScorePerBowl]);
+  gameTest.frames.push([0, 
+    gameTest.maxScorePerBowl, 
+    gameTest.maxScorePerBowl]);
   gameTest.recordRolls();
 }
 
@@ -145,11 +149,12 @@ function testScoreIncrement() {
 function testRecordRolls() {
   test('All strikes should be 12 10s', () => {
     const gameTest = new Game();
-    const allStrikes = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+    const allStrikes = 
+      [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
     setAllStrikes(gameTest);
     expect(gameTest.rolls).toStrictEqual(allStrikes);
   });
-  test('All spares should be [0, 10] for 9 frames and [0, 10, 10] for last game', () => {
+  test(`All spares should be [0, 10] for 9 frames and [0, 10, 10] for last game`, () => {
     const gameTest = new Game();
     const allSpares = [
       0, 10,
