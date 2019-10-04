@@ -3,33 +3,39 @@ $(document).ready(() => {
 });
 
 function startGame() {
-  $('#play-button').click(() => {
-    const game = new Game();
-    game.play();
-    const score = game.getScores();
-    for (let frame = 0; frame < 10; frame++) {
-      displayFrame(game, frame);
-      displayScore(game, frame);
+  $("#play-button").click(() => {
+    const playerName = $("#name").val();
+    if (playerName == "") {
+      $("#result").text("Please enter a name!");
     }
-  $('#score').val(score);
+    else {
+      const game = new Game();
+      game.play();
+      const score = game.getScores();
+      for (let frame = 0; frame < 10; frame++) {
+        displayFrame(game, frame);
+        displayScore(game, frame);
+      }
+      $("#result").text(playerName + " has scored " + score + "!");
+    }
   });
 }
 
 function displayFrame(game, frame) {
   for (let i = 0; i < 2; i++) {
-    // score 1 and score 2 of each frame
-    $('#scoresheetTable tr:eq(1) td:eq(' + ((frame * 2) + i) + ')')
+    // score 1 and score 2 of each 
+    $("#scoresheetTable tr:eq(1) td:eq(" + ((frame * 2) + i) + ")")
     .html(game.frames[frame][i]);
     
     // last frame 3rd score
     if (frame == game.frames.length - 1 && game.frames[frame].length == 3)
-      $('#scoresheetTable tr:eq(1) td:eq(' + ((frame * 2) + 2) + ')')
+      $("#scoresheetTable tr:eq(1) td:eq(" + ((frame * 2) + 2) + ")")
       .html(game.frames[frame][2]);
   } 
 }
 
 function displayScore(game, frame) {
-  $('#scoresheetTable tr:eq(2) td:eq(' + (frame) + ')')
+  $("#scoresheetTable tr:eq(2) td:eq(" + (frame) + ")")
   .html(game.scores[frame]);
 }
 
@@ -71,7 +77,7 @@ class Game {
   recordRolls() {
     this.rolls.length = 0;
     // record each score for each throw
-    // if strike, ignore the second 0 as it's easier to calculate
+    // if strike, ignore the second 0 as it"s easier to calculate
     // special scoring for strikes
     for (var i = 0; i < this.totalFrames - 1; i++) {
       this.rolls.push(this.frames[i][0]);
